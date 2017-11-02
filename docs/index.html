@@ -9,7 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Your name here" />
+<meta name="author" content="Yujia Pan" />
 
 
 <title>I have the best titles</title>
@@ -24,6 +24,7 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-1.1/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
 <link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
@@ -163,6 +164,14 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 
@@ -294,24 +303,213 @@ div.tocify {
 
 <div class="fluid-row" id="header">
 
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">I have the best titles</h1>
-<h3 class="subtitle"><em>Subtitle here if desired</em></h3>
-<h4 class="author"><em>Your name here</em></h4>
+<h3 class="subtitle"><em>Explore the scientific collaborations at UB</em></h3>
+<h4 class="author"><em>Yujia Pan</em></h4>
 
 </div>
 
 
-<div id="introduction" class="section level1">
+<div id="introduction" class="section level1 tabset">
 <h1>Introduction</h1>
-<p>My really awesome and complete introduction will go here.</p>
 <blockquote>
-<p>I know words. I have the best words. ~ Donald Trump</p>
+<p>At UB, professors are awesome and they get a LOT of grants every year! But.. How do they collborate and who write proposals together?</p>
 </blockquote>
+<ul>
+<li><p><strong>Problem Statement:</strong> Today Scientific collaboration is already common within and among a large number of disciplines. One of the most widely discussed forms of scientific collaborations using social network analysis is co-authorship. Besides co-authorship, co-investigation that happens when investigators work on and submit a proposal together, is another form of scientific collaboration. Its importance is no less than the widely studied co-authorship. However, unlike co-authorship, little is studied about co-investigation relationships because information about proposal submission is not commonly available.</p></li>
+<li><strong>Study Objectives:</strong></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Reveal the topological structures of investigator networks at UB between fiscal year 2011 and 2015.</li>
+<li>Investigate the temporal characteristics of these networks and how they envolve over time.</li>
+</ol>
+<ul>
+<li><strong>Significance: </strong></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>A better understanding of scientific collaborations.</li>
+<li>Promote proposal writing at UB.</li>
+</ol>
 </div>
-<div id="materials-and-methods" class="section level1">
-<h1>Materials and methods</h1>
+<div id="materials-and-methods" class="section level1 tabset tabset-fade">
+<h1>Materials and Methods</h1>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>Data used in this project was acquired from UB Sponsored Projects Services (SPS) with the help of my advisor, Dr. Ling Bian. A total of 7,714 proposals submitted from UB between the fiscal year 2011 and 2015 involving 1,446 investigators are included in a series of spreadsheets.</p>
+<pre class="r"><code>library(RCurl)
+library(knitr)</code></pre>
+<pre class="r"><code>dept &lt;- getURL(&quot;https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_Dept.csv&quot;, 
+    ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
+dept_frame &lt;- read.csv(textConnection(dept), header = T)
+knitr::kable(head(dept_frame), caption = &quot;Example of Department Table&quot;)</code></pre>
+<table>
+<caption>Example of Department Table</caption>
+<thead>
+<tr class="header">
+<th align="left">ID</th>
+<th align="left">Department</th>
+<th align="left">School</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ANE01</td>
+<td align="left">Anesthesiology</td>
+<td align="left">School of Medicine and Biomedical Sciences</td>
+</tr>
+<tr class="even">
+<td align="left">ANE02</td>
+<td align="left">Anesthesiology</td>
+<td align="left">School of Medicine and Biomedical Sciences</td>
+</tr>
+<tr class="odd">
+<td align="left">ANE03</td>
+<td align="left">Anesthesiology</td>
+<td align="left">School of Medicine and Biomedical Sciences</td>
+</tr>
+<tr class="even">
+<td align="left">ANE04</td>
+<td align="left">Anesthesiology</td>
+<td align="left">School of Medicine and Biomedical Sciences</td>
+</tr>
+<tr class="odd">
+<td align="left">APY01</td>
+<td align="left">Anthropology</td>
+<td align="left">College of Arts and Sciences</td>
+</tr>
+<tr class="even">
+<td align="left">APY02</td>
+<td align="left">Anthropology</td>
+<td align="left">College of Arts and Sciences</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>corp &lt;- getURL(&quot;https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_Corp.csv&quot;, 
+    ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
+corp_frame &lt;- read.csv(textConnection(corp), header = T)
+knitr::kable(head(corp_frame), caption = &quot;Example of Corporate Proposal Table&quot;)</code></pre>
+<table>
+<caption>Example of Corporate Proposal Table</caption>
+<thead>
+<tr class="header">
+<th align="left">ID1</th>
+<th align="left">ID2</th>
+<th align="right">PID</th>
+<th align="left">Awarded</th>
+<th align="right">Year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">RIA24</td>
+<td align="left">SSW13</td>
+<td align="right">11010008</td>
+<td align="left">NO</td>
+<td align="right">2011</td>
+</tr>
+<tr class="even">
+<td align="left">RIA24</td>
+<td align="left">RIA26</td>
+<td align="right">11010008</td>
+<td align="left">NO</td>
+<td align="right">2011</td>
+</tr>
+<tr class="odd">
+<td align="left">SSW13</td>
+<td align="left">RIA26</td>
+<td align="right">11010008</td>
+<td align="left">NO</td>
+<td align="right">2011</td>
+</tr>
+<tr class="even">
+<td align="left">RIA24</td>
+<td align="left">RIA16</td>
+<td align="right">11010009</td>
+<td align="left">NO</td>
+<td align="right">2011</td>
+</tr>
+<tr class="odd">
+<td align="left">RIA24</td>
+<td align="left">RIA17</td>
+<td align="right">11010009</td>
+<td align="left">NO</td>
+<td align="right">2011</td>
+</tr>
+<tr class="even">
+<td align="left">RIA16</td>
+<td align="left">RIA17</td>
+<td align="right">11010009</td>
+<td align="left">NO</td>
+<td align="right">2011</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>single &lt;- getURL(&quot;https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_SIngle.csv&quot;, 
+    ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
+single_frame &lt;- read.csv(textConnection(single), header = T)
+knitr::kable(head(single_frame), caption = &quot;Example of Single Proposal Table&quot;)</code></pre>
+<table>
+<caption>Example of Single Proposal Table</caption>
+<thead>
+<tr class="header">
+<th align="left">ID</th>
+<th align="right">PID</th>
+<th align="left">Awarded</th>
+<th align="right">Year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">STEP02</td>
+<td align="right">11010051</td>
+<td align="left">YES</td>
+<td align="right">2011</td>
+</tr>
+<tr class="even">
+<td align="left">SNG17</td>
+<td align="right">11010074</td>
+<td align="left">YES</td>
+<td align="right">2011</td>
+</tr>
+<tr class="odd">
+<td align="left">FMM08</td>
+<td align="right">11010087</td>
+<td align="left">YES</td>
+<td align="right">2011</td>
+</tr>
+<tr class="even">
+<td align="left">BIO19</td>
+<td align="right">11010094</td>
+<td align="left">NO</td>
+<td align="right">2011</td>
+</tr>
+<tr class="odd">
+<td align="left">BCH18</td>
+<td align="right">11010096</td>
+<td align="left">NO</td>
+<td align="right">2011</td>
+</tr>
+<tr class="even">
+<td align="left">CHE23</td>
+<td align="right">11010100</td>
+<td align="left">NO</td>
+<td align="right">2011</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="methodology" class="section level2">
+<h2>Methodology</h2>
 <p>Narrative and most code will go here. Describe what you are doing and show how to do it (with code).</p>
 <p>You can do bullets like this:</p>
 <ul>
@@ -327,8 +525,8 @@ div.tocify {
 </ol>
 <p>See <a href="http://rmarkdown.rstudio.com/" class="uri">http://rmarkdown.rstudio.com/</a> for all the amazing things you can do.</p>
 <p>Here’s my first code chunk.</p>
-<pre class="r"><code>1+2</code></pre>
-<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>1+2+3</code></pre>
+<pre><code>## [1] 6</code></pre>
 <p>Load any required packages in a code chunk (you may need to install some packages):</p>
 <pre class="r"><code>library(dplyr)
 library(ggplot2)
@@ -351,10 +549,11 @@ ggplot(d,aes(x=longitude,y=latitude))+
   geom_point(col=&quot;red&quot;)+
   coord_equal()</code></pre>
 <div class="figure">
-<img src="index_files/figure-html/unnamed-chunk-4-1.png" alt="Map illustrating the known occurrence locations" width="576" />
+<img src="index_files/figure-html/unnamed-chunk-6-1.png" alt="Map illustrating the known occurrence locations" width="576" />
 <p class="caption">
 Map illustrating the known occurrence locations
 </p>
+</div>
 </div>
 </div>
 <div id="results" class="section level1">

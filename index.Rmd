@@ -1,16 +1,46 @@
 ---
 title: "I have the best titles"
-author: Your name here
-subtitle: Subtitle here if desired
+author: Yujia Pan
+subtitle: Explore the scientific collaborations at UB
 ---
 
-# Introduction
-My really awesome and complete introduction will go here.  
+# Introduction {.tabset}
+> At UB, professors are awesome and they get a LOT of grants every year!
+> But.. How do they collborate and who write proposals together?
 
-> I know words.  I have the best words.  ~ Donald Trump
+* **Problem Statement:**   
+Today Scientific collaboration is already common within and among a large number of disciplines. One of the most widely discussed forms of scientific collaborations using social network analysis is co-authorship. Besides co-authorship, co-investigation that happens when investigators work on and submit a proposal together, is another form of scientific collaboration. Its importance is no less than the widely studied co-authorship. However, unlike co-authorship, little is studied about co-investigation relationships because information about proposal submission is not commonly available.  
 
-# Materials and methods
+* **Study Objectives:**
+1. Reveal the topological structures of investigator networks at UB between fiscal year 2011 and 2015.
+2. Investigate the temporal characteristics of these networks and how they envolve over time.
 
+* **Significance: **
+1. A better understanding of scientific collaborations. 
+2. Promote proposal writing at UB.
+
+# Materials and Methods {.tabset .tabset-fade}
+##Data
+Data used in this project was acquired from UB Sponsored Projects Services (SPS) with the help of my advisor, Dr. Ling Bian. A total of 7,714 proposals submitted from UB between the fiscal year 2011 and 2015 involving 1,446 investigators are included in a series of spreadsheets. 
+```{r, message=F, warning=F,tidy=TRUE}
+library(RCurl)
+library(knitr)
+```
+```{r, tidy=TRUE, results = "asis"}
+dept <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_Dept.csv', ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
+dept_frame <- read.csv(textConnection(dept), header=T)
+knitr::kable(head(dept_frame), caption = "Example of Department Table") 
+corp <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_Corp.csv', ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
+corp_frame <- read.csv(textConnection(corp), header=T)
+knitr::kable(head(corp_frame), caption = "Example of Corporate Proposal Table")
+
+single <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_SIngle.csv', ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
+single_frame <- read.csv(textConnection(single), header=T)
+knitr::kable(head(single_frame), caption = "Example of Single Proposal Table") 
+
+```
+
+##Methodology
 Narrative and most code will go here.  Describe what you are doing and show how to do it (with code).
 
 You can do bullets like this:
