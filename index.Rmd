@@ -19,6 +19,7 @@ Today Scientific collaboration is already common within and among a large number
 1. A better understanding of scientific collaborations. 
 2. Promote proposal writing at UB.
 3. The approaches used can be applied to other institutions where research proposals are actively submitted.  
+<br>
 
 # Materials and Methods {.tabset .tabset-fade}
 ##Packages
@@ -30,8 +31,10 @@ library(igraph)
 library(dplyr)
 ```
 
-`Please see "Data" tab for the data used in the project.`
-  
+`Please see "Data" tab for the data used in the project.`  
+
+<br>
+
 ##Data
 Data used in this project was acquired from UB Sponsored Projects Services (SPS) with the help of my advisor, Dr. Ling Bian. A total of 7,714 proposals submitted from UB between the fiscal year 2011 and 2015 involving 1,446 investigators are included in a series of spreadsheets.
 
@@ -58,8 +61,10 @@ dept2011_frame <- read.csv(textConnection(dept_2011), header=T)
 knitr::kable(head(dept2011_frame), caption = "Example of Investigator Information Table")
 ```
 
-`Please see "Methodology" tab for the methods used in the project.`
-  
+`Please see "Methodology" tab for the methods used in the project.`  
+
+<br>
+
 ##Methodology
 To fulfill the research objectives, three steps will be taken in the study.
 
@@ -84,7 +89,7 @@ for (i in 1:14){
   school_matrix[i]<-toString(unique(dept2011_frame$School)[i])
 }
 ```
-  
+<br> 
 **2.Identifying Topological Characteristics:**  
 Four sets of metrics, i.e., density, network clustering coefficient, average path length, and centrality are used to analyze the topological characteristics of the investigator networks. 
 *The density is used to explore whether the investigators often work with many other investigators. 
@@ -94,9 +99,11 @@ Four sets of metrics, i.e., density, network clustering coefficient, average pat
 ```{r,tidy=TRUE}
 #codes to be added..
 ```
-
+<br>
 **3.Identifying Temporal Characteristics:**  
-To be added...  
+To be added...   
+
+<br>
 
 # Results
 The investigator network for fiscal year 2011 is displayed as below. We can notice that there are a large number of isolated nodes in the network. These nodes represent single investigators who submitted proposals by themselves and did not have collaborators. 
@@ -111,9 +118,13 @@ legend("bottomleft", school_matrix, pch=20,
 
 To be continued...  
 
+<br>
+
 # Conclusions
 
 What have you learned?  Are there any broader implications?  
+
+<br>
 
 # References
 
