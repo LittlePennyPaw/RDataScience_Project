@@ -1,3 +1,15 @@
+.navbar-inverse {
+  background-color: #dd4814;
+  border-color: #dd4814;
+}
+
+.title {
+  text-align: center;
+}
+
+.subtitle, .author {
+  text-align: right;
+}
 
 .screenshot {
   border: 1px solid #ccc;
@@ -12,13 +24,25 @@ table.table td a:only-child:active {
   text-decoration: underline;
 }
 
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #FFE5B4}
+
 .well{
   background-color: #F5F5DC;
   border-radius: 40px 0px 40px 0px;
 }
 
 h1, h2, h3, h4, h5, h6{
-  margin-top:60px;
+  margin-top:30px;
 }
 
 /*******  Footer ******/
@@ -107,6 +131,16 @@ html,body {height:75%;}
   border-color: #357ebd;
 }
 
+.btn-default {
+  background-color: #dd4814;
+  font-size: 10px;
+  float: left !important;
+}
+
+.btn-default:hover, .btn-default:focus, .btn-default:active, .btn-default.active, .open > .dropdown-toggle.btn-default {
+  background: #dd4814;
+}
+
 .btn-primary:hover,
 .btn-primary:focus,
 .btn-primary:active,
@@ -129,7 +163,7 @@ html,body {height:75%;}
 ************************/
 
 .btn {
-    padding: 14px 24px;
+    padding: 10px 20px;
     border: 0 none;
     font-weight: 700;
     letter-spacing: 1px;
