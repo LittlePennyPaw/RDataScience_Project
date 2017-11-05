@@ -15,3 +15,4 @@ output:
       after_body: include/after_body.html
     css: styles.css
     keep_md: false
+    bibliography: Bibliography.xml
