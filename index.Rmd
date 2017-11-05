@@ -5,48 +5,70 @@ subtitle: Explore the scientific collaborations at UB
 ---
 
 # Introduction {.tabset}
-> At UB, professors are awesome and they get a LOT of grants every year!
-> But.. How do they collborate and who write proposals together?
+> At UB, professors are awesome and they get a LOT of grants every year!  
+> But.. How do they collaborate and who write proposals together?
 
 * **Problem Statement:**   
-Today Scientific collaboration is already common within and among a large number of disciplines [@Newman2001]. One of the most widely discussed forms of scientific collaborations using social network analysis is co-authorship. Besides co-authorship, co-investigation that happens when investigators work on and submit a proposal together, is another form of scientific collaboration. Its importance is no less than the widely studied co-authorship. However, unlike co-authorship, little is studied about co-investigation relationships because information about proposal submission is not commonly available.  
+Today Scientific collaboration is already common within and among a large number of disciplines. One of the most widely discussed forms of scientific collaborations using social network analysis is co-authorship. Besides co-authorship, co-investigation that happens when investigators work on and submit a proposal together, is another form of scientific collaboration. Its importance is no less than the widely studied co-authorship. However, unlike co-authorship, little is studied about co-investigation relationships because information about proposal submission is not commonly available.  
 
 * **Study Objectives:**
-1. Reveal the topological structures of investigator networks at UB between fiscal year 2011 and 2015.
+1. Reveal the topological structures of investigator networks at UB between the fiscal year 2011 and 2015.
 2. Investigate the temporal characteristics of these networks and how they evolve over time.
 
 * **Significance: **
 1. A better understanding of scientific collaborations. 
 2. Promote proposal writing at UB.
+3. The approaches used can be applied to other institutions where research proposals are actively submitted.  
 
 # Materials and Methods {.tabset .tabset-fade}
-##Data
-Data used in this project was acquired from UB Sponsored Projects Services (SPS) with the help of my advisor, Dr. Ling Bian. A total of 7,714 proposals submitted from UB between the fiscal year 2011 and 2015 involving 1,446 investigators are included in a series of spreadsheets. 
+##Packages
+Here are the pacakges needed to run the codes:
 ```{r, message=F, warning=F,tidy=TRUE}
 library(RCurl)
 library(knitr)
 library(igraph)
 library(dplyr)
 ```
+
+`Please see "Data" tab for the data used in the project.`
+  
+##Data
+Data used in this project was acquired from UB Sponsored Projects Services (SPS) with the help of my advisor, Dr. Ling Bian. A total of 7,714 proposals submitted from UB between the fiscal year 2011 and 2015 involving 1,446 investigators are included in a series of spreadsheets.
+
+These spreadsheets are preprocessed and organized into a relational database. The database includes three parts:
+
+**1. Collborated Investigators:** These investigators collborated on proposals. Each record includes the name of PI and one co-PI, the ID of proposal they submitted together, the year they submitted the proposal, and the status of the proposal.
+```{r, tidy=TRUE, results = "asis"}
+corp <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_Corp.csv', ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
+corp_frame <- read.csv(textConnection(corp), header=T)
+knitr::kable(head(corp_frame), caption = "Example of Collborated Investigators Table")
+```
+
+**2. Single Investigators:** These investigators worked on their own. Each record includes the name of PI, the ID of the proposal, the year the proposal was submitted, and the status of the proposal.
+```{r, tidy=TRUE, results = "asis"}
+single <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_SIngle.csv', ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
+single_frame <- read.csv(textConnection(single), header=T)
+knitr::kable(head(single_frame), caption = "Example of Single Investigators Table") 
+```
+
+**3. Investigator Information:** Each record includes investigator ID, his/her department and school affiliation. 
 ```{r, tidy=TRUE, results = "asis"}
 dept_2011 <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Dept_2011.csv', ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
 dept2011_frame <- read.csv(textConnection(dept_2011), header=T)
-knitr::kable(head(dept2011_frame), caption = "Example of Department Table")
-
-corp <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_Corp.csv', ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
-corp_frame <- read.csv(textConnection(corp), header=T)
-knitr::kable(head(corp_frame), caption = "Example of Corporate Proposal Table")
-
-single <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_SIngle.csv', ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
-single_frame <- read.csv(textConnection(single), header=T)
-knitr::kable(head(single_frame), caption = "Example of Single Proposal Table") 
-
+knitr::kable(head(dept2011_frame), caption = "Example of Investigator Information Table")
 ```
 
+`Please see "Methodology" tab for the methods used in the project.`
+  
 ##Methodology
+To fulfill the research objectives, three steps will be taken in the study.
 
+**1.Constructing Investigator Networks:**  
+The investigator networks are built for each fiscal year. In the networks, nodes represent investigators and edges are established if two investigators worked on a proposal. Single investigators will be represented as isolated nodes.
+Each node is assigned properties, including investigator ID, and department and school affiliation. Each edge is also assigned properties, including proposal ID and whether it was awarded.
 
-```{r}
+Here are the codes for constructing investigator network in fiscal year 2011:
+```{r,tidy=TRUE, message=F, warning=F}
 corp2011<-filter(corp_frame,Year == "2011")
 single2011<-filter(single_frame,Year == "2011")
 corp.network1<-graph.data.frame(corp2011, vertice = dept2011_frame,directed=F)
@@ -61,26 +83,37 @@ for (i in 1:14){
   V(corp.network1)$color <- gsub( unique(dept2011_frame$School)[i],color_matrix[i],V(corp.network1)$color)
   school_matrix[i]<-toString(unique(dept2011_frame$School)[i])
 }
+```
+  
+**2.Identifying Topological Characteristics:**  
+Four sets of metrics, i.e., density, network clustering coefficient, average path length, and centrality are used to analyze the topological characteristics of the investigator networks. 
+*The density is used to explore whether the investigators often work with many other investigators. 
+*The network clustering coefficient measures the probability that an investigator’s co-investigators also collaborate with each other. 
+*The average path length over the network is utilized to identify the number of ‘investigator steps’ between two investigators. 
+*The centrality metrics are introduced to identify the “star” investigators who are central and critical in the network. The top three investigators with the highest values of degree centrality, betweenness centrality, and closeness centrality are identified.
+```{r,tidy=TRUE}
+#codes to be added..
+```
+
+**3.Identifying Temporal Characteristics:**  
+To be added...  
+
+# Results
+The investigator network for fiscal year 2011 is displayed as below. We can notice that there are a large number of isolated nodes in the network. These nodes represent single investigators who submitted proposals by themselves and did not have collaborators. 
+```{r,tidy=TRUE}
 plot(corp.network1, vertex.size=3, vertex.frame.color="Gray", 
      edge.width = 0.7, isolates = single2011, 
      layout= layout_nicely(corp.network1), main= "Investigator Network at UB 2011", vertex.label = NA)
 
 legend("bottomleft", school_matrix, pch=20,
-       col=color_matrix, pt.cex=1.3, cex=0.6, bty="n", ncol=1, text.col= "gray35")
+       col=color_matrix, pt.cex=1.3, cex=0.4, bty="n", ncol=1, text.col= "gray35")
 ```
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/Turdus-migratorius-002.jpg" alt="alt text" width="200">
-<small><small><small>Licensed under CC BY-SA 3.0 via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Turdus-migratorius-002.jpg#/media/File:Turdus-migratorius-002.jpg)</small></small></small>
-
-
-
-# Results
-
-Show tables, plots, etc. and describe them.
+To be continued...  
 
 # Conclusions
 
-What have you learned?  Are there any broader implications?
+What have you learned?  Are there any broader implications?  
 
 # References
 
