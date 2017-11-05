@@ -12,7 +12,7 @@
 <meta name="author" content="Yujia Pan" />
 
 
-<title>I have the best titles</title>
+<title>Investigator Networks at UB</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -313,7 +313,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">I have the best titles</h1>
+<h1 class="title toc-ignore">Investigator Networks at UB</h1>
 <h3 class="subtitle"><em>Explore the scientific collaborations at UB</em></h3>
 <h4 class="author"><em>Yujia Pan</em></h4>
 
@@ -327,12 +327,12 @@ div.tocify {
 </blockquote>
 <ul>
 <li><p><strong>Problem Statement:</strong><br />
-Today Scientific collaboration is already common within and among a large number of disciplines. One of the most widely discussed forms of scientific collaborations using social network analysis is co-authorship. Besides co-authorship, co-investigation that happens when investigators work on and submit a proposal together, is another form of scientific collaboration. Its importance is no less than the widely studied co-authorship. However, unlike co-authorship, little is studied about co-investigation relationships because information about proposal submission is not commonly available.</p></li>
+Today Scientific collaboration is already common within and among a large number of disciplines <span class="citation">[@Newman2001]</span>. One of the most widely discussed forms of scientific collaborations using social network analysis is co-authorship. Besides co-authorship, co-investigation that happens when investigators work on and submit a proposal together, is another form of scientific collaboration. Its importance is no less than the widely studied co-authorship. However, unlike co-authorship, little is studied about co-investigation relationships because information about proposal submission is not commonly available.</p></li>
 <li><strong>Study Objectives:</strong></li>
 </ul>
 <ol style="list-style-type: decimal">
 <li>Reveal the topological structures of investigator networks at UB between fiscal year 2011 and 2015.</li>
-<li>Investigate the temporal characteristics of these networks and how they envolve over time.</li>
+<li>Investigate the temporal characteristics of these networks and how they evolve over time.</li>
 </ol>
 <ul>
 <li><strong>Significance: </strong></li>
@@ -348,11 +348,13 @@ Today Scientific collaboration is already common within and among a large number
 <h2>Data</h2>
 <p>Data used in this project was acquired from UB Sponsored Projects Services (SPS) with the help of my advisor, Dr. Ling Bian. A total of 7,714 proposals submitted from UB between the fiscal year 2011 and 2015 involving 1,446 investigators are included in a series of spreadsheets.</p>
 <pre class="r"><code>library(RCurl)
-library(knitr)</code></pre>
-<pre class="r"><code>dept &lt;- getURL(&quot;https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_Dept.csv&quot;, 
+library(knitr)
+library(igraph)
+library(dplyr)</code></pre>
+<pre class="r"><code>dept_2011 &lt;- getURL(&quot;https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Dept_2011.csv&quot;, 
     ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
-dept_frame &lt;- read.csv(textConnection(dept), header = T)
-knitr::kable(head(dept_frame), caption = &quot;Example of Department Table&quot;)</code></pre>
+dept2011_frame &lt;- read.csv(textConnection(dept_2011), header = T)
+knitr::kable(head(dept2011_frame), caption = &quot;Example of Department Table&quot;)</code></pre>
 <table>
 <caption>Example of Department Table</caption>
 <thead>
@@ -364,34 +366,34 @@ knitr::kable(head(dept_frame), caption = &quot;Example of Department Table&quot;
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">ANE01</td>
-<td align="left">Anesthesiology</td>
-<td align="left">School of Medicine and Biomedical Sciences</td>
+<td align="left">RIA24</td>
+<td align="left">Research Institute on Addictions</td>
+<td align="left">Research Center and Institute</td>
 </tr>
 <tr class="even">
-<td align="left">ANE02</td>
-<td align="left">Anesthesiology</td>
-<td align="left">School of Medicine and Biomedical Sciences</td>
+<td align="left">SSW13</td>
+<td align="left">School of Social Work</td>
+<td align="left">School of Social Work</td>
 </tr>
 <tr class="odd">
-<td align="left">ANE03</td>
-<td align="left">Anesthesiology</td>
-<td align="left">School of Medicine and Biomedical Sciences</td>
+<td align="left">RIA16</td>
+<td align="left">Research Institute on Addictions</td>
+<td align="left">Research Center and Institute</td>
 </tr>
 <tr class="even">
-<td align="left">ANE04</td>
-<td align="left">Anesthesiology</td>
-<td align="left">School of Medicine and Biomedical Sciences</td>
+<td align="left">PSY17</td>
+<td align="left">Psychology</td>
+<td align="left">College of Arts and Sciences</td>
 </tr>
 <tr class="odd">
-<td align="left">APY01</td>
-<td align="left">Anthropology</td>
-<td align="left">College of Arts and Sciences</td>
+<td align="left">PHS08</td>
+<td align="left">Pharmaceutical Sciences</td>
+<td align="left">School of Pharmacy and Pharmaceutical Sciences</td>
 </tr>
 <tr class="even">
-<td align="left">APY02</td>
-<td align="left">Anthropology</td>
-<td align="left">College of Arts and Sciences</td>
+<td align="left">PT09</td>
+<td align="left">Pharmacology &amp; Toxicology</td>
+<td align="left">School of Medicine and Biomedical Sciences</td>
 </tr>
 </tbody>
 </table>
@@ -511,50 +513,28 @@ knitr::kable(head(single_frame), caption = &quot;Example of Single Proposal Tabl
 </div>
 <div id="methodology" class="section level2">
 <h2>Methodology</h2>
-<p>Narrative and most code will go here. Describe what you are doing and show how to do it (with code).</p>
-<p>You can do bullets like this:</p>
-<ul>
-<li>The first most important thing</li>
-<li>The second most important thing</li>
-<li>The third most important thing</li>
-</ul>
-<p>You can do numbers like this:</p>
-<ol style="list-style-type: decimal">
-<li>The first most important thing</li>
-<li>The second most important thing</li>
-<li>The third most important thing</li>
-</ol>
-<p>See <a href="http://rmarkdown.rstudio.com/" class="uri">http://rmarkdown.rstudio.com/</a> for all the amazing things you can do.</p>
-<p>Here’s my first code chunk.</p>
-<pre class="r"><code>1+2+3</code></pre>
-<pre><code>## [1] 6</code></pre>
-<p>Load any required packages in a code chunk (you may need to install some packages):</p>
-<pre class="r"><code>library(dplyr)
-library(ggplot2)
-library(maps)
-library(spocc)
-knitr::opts_chunk$set(cache=TRUE)  # cache the results for quick compiling</code></pre>
-<p>We are going to use the <code>occ()</code> function to download <em>occurrence</em> records for the American robin (<em>Turdus migratorius</em>) from the <a href="gbif.org">Global Biodiversity Information Facility</a>.</p>
+<pre class="r"><code>corp2011&lt;-filter(corp_frame,Year == &quot;2011&quot;)
+single2011&lt;-filter(single_frame,Year == &quot;2011&quot;)
+corp.network1&lt;-graph.data.frame(corp2011, vertice = dept2011_frame,directed=F)
+V(corp.network1)$color &lt;- V(corp.network1)$School
+color_matrix &lt;- matrix(c(&quot;deeppink1&quot;,&quot;dodgerblue2&quot;,&quot;cadetblue1&quot;,
+                         &quot;brown2&quot;,&quot;darkorchid2&quot;,&quot;darkseagreen3&quot;,
+                         &quot;green2&quot;,&quot;gray0&quot;,&quot;darkorange1&quot;,
+                         &quot;firebrick1&quot;,&quot;darkgreen&quot;,&quot;darkgoldenrod3&quot;,
+                         &quot;coral1&quot;,&quot;antiquewhite3&quot;))
+school_matrix &lt;- matrix(nrow=14)
+for (i in 1:14){
+  V(corp.network1)$color &lt;- gsub( unique(dept2011_frame$School)[i],color_matrix[i],V(corp.network1)$color)
+  school_matrix[i]&lt;-toString(unique(dept2011_frame$School)[i])
+}
+plot(corp.network1, vertex.size=3, vertex.frame.color=&quot;Gray&quot;, 
+     edge.width = 0.7, isolates = single2011, 
+     layout= layout_nicely(corp.network1), main= &quot;Investigator Network at UB 2011&quot;, vertex.label = NA)
+
+legend(&quot;bottomleft&quot;, school_matrix, pch=20,
+       col=color_matrix, pt.cex=1.3, cex=0.6, bty=&quot;n&quot;, ncol=1, text.col= &quot;gray35&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p><img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/Turdus-migratorius-002.jpg" alt="alt text" width="200"> <small><small><small>Licensed under CC BY-SA 3.0 via <a href="https://commons.wikimedia.org/wiki/File:Turdus-migratorius-002.jpg#/media/File:Turdus-migratorius-002.jpg">Wikimedia Commons</a></small></small></small></p>
-<pre class="r"><code>## define which species to query
-sp=&#39;Turdus migratorius&#39;
-
-## run the query and convert to data.frame()
-d = occ(query=sp, from=&#39;ebird&#39;,limit = 100) %&gt;% occ2df()</code></pre>
-<p>This can take a few seconds.</p>
-<pre class="r"><code># Load coastline
-map=map_data(&quot;world&quot;)
-
-ggplot(d,aes(x=longitude,y=latitude))+
-  geom_polygon(aes(x=long,y=lat,group=group),data=map)+
-  geom_point(col=&quot;red&quot;)+
-  coord_equal()</code></pre>
-<div class="figure">
-<img src="index_files/figure-html/unnamed-chunk-6-1.png" alt="Map illustrating the known occurrence locations" width="576" />
-<p class="caption">
-Map illustrating the known occurrence locations
-</p>
-</div>
 </div>
 </div>
 <div id="results" class="section level1">
