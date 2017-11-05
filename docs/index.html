@@ -341,7 +341,8 @@ Today Scientific collaboration is already common within and among a large number
 <ol style="list-style-type: decimal">
 <li>A better understanding of scientific collaborations.</li>
 <li>Promote proposal writing at UB.</li>
-<li>The approaches used can be applied to other institutions where research proposals are actively submitted.</li>
+<li>The approaches used can be applied to other institutions where research proposals are actively submitted.<br />
+<br></li>
 </ol>
 </div>
 <div id="materials-and-methods" class="section level1 tabset tabset-fade">
@@ -354,6 +355,7 @@ library(knitr)
 library(igraph)
 library(dplyr)</code></pre>
 <p><code>Please see &quot;Data&quot; tab for the data used in the project.</code></p>
+<p><br></p>
 </div>
 <div id="data" class="section level2">
 <h2>Data</h2>
@@ -522,6 +524,7 @@ knitr::kable(head(dept2011_frame), caption = &quot;Example of Investigator Infor
 </tbody>
 </table>
 <p><code>Please see &quot;Methodology&quot; tab for the methods used in the project.</code></p>
+<p><br></p>
 </div>
 <div id="methodology" class="section level2">
 <h2>Methodology</h2>
@@ -542,11 +545,12 @@ for (i in 1:14) {
         V(corp.network1)$color)
     school_matrix[i] &lt;- toString(unique(dept2011_frame$School)[i])
 }</code></pre>
-<p><strong>2.Identifying Topological Characteristics:</strong><br />
+<p><br> <strong>2.Identifying Topological Characteristics:</strong><br />
 Four sets of metrics, i.e., density, network clustering coefficient, average path length, and centrality are used to analyze the topological characteristics of the investigator networks. <em>The density is used to explore whether the investigators often work with many other investigators. </em>The network clustering coefficient measures the probability that an investigator’s co-investigators also collaborate with each other. <em>The average path length over the network is utilized to identify the number of ‘investigator steps’ between two investigators. </em>The centrality metrics are introduced to identify the “star” investigators who are central and critical in the network. The top three investigators with the highest values of degree centrality, betweenness centrality, and closeness centrality are identified.</p>
 <pre class="r"><code># codes to be added..</code></pre>
-<p><strong>3.Identifying Temporal Characteristics:</strong><br />
+<p><br> <strong>3.Identifying Temporal Characteristics:</strong><br />
 To be added…</p>
+<p><br></p>
 </div>
 </div>
 <div id="results" class="section level1">
@@ -560,10 +564,12 @@ legend(&quot;bottomleft&quot;, school_matrix, pch = 20, col = color_matrix, pt.c
     cex = 0.4, bty = &quot;n&quot;, ncol = 1, text.col = &quot;gray35&quot;)</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>To be continued…</p>
+<p><br></p>
 </div>
 <div id="conclusions" class="section level1">
 <h1>Conclusions</h1>
 <p>What have you learned? Are there any broader implications?</p>
+<p><br></p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
