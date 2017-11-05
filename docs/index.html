@@ -16,7 +16,7 @@
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="site_libs/bootstrap-3.3.5/css/simplex.min.css" rel="stylesheet" />
+<link href="site_libs/bootstrap-3.3.5/css/united.min.css" rel="stylesheet" />
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
@@ -104,34 +104,34 @@ button.code-folding-btn:focus {
 <style type="text/css">
 /* padding for bootstrap navbar */
 body {
-  padding-top: 41px;
+  padding-top: 51px;
   padding-bottom: 40px;
 }
 /* offset scroll position for anchor links (for fixed navbar)  */
 .section h1 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 
 .section h2 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h3 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h4 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h5 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 .section h6 {
-  padding-top: 46px;
-  margin-top: -46px;
+  padding-top: 56px;
+  margin-top: -56px;
 }
 </style>
 
@@ -291,7 +291,7 @@ div.tocify {
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/adammwilson/RDataScience">
+  <a href="https://github.com/LittlePennyPaw/RDataScience_Project">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -323,15 +323,16 @@ div.tocify {
 <div id="introduction" class="section level1 tabset">
 <h1>Introduction</h1>
 <blockquote>
-<p>At UB, professors are awesome and they get a LOT of grants every year! But.. How do they collborate and who write proposals together?</p>
+<p>At UB, professors are awesome and they get a LOT of grants every year!<br />
+But.. How do they collaborate and who write proposals together?</p>
 </blockquote>
 <ul>
 <li><p><strong>Problem Statement:</strong><br />
-Today Scientific collaboration is already common within and among a large number of disciplines <span class="citation">[@Newman2001]</span>. One of the most widely discussed forms of scientific collaborations using social network analysis is co-authorship. Besides co-authorship, co-investigation that happens when investigators work on and submit a proposal together, is another form of scientific collaboration. Its importance is no less than the widely studied co-authorship. However, unlike co-authorship, little is studied about co-investigation relationships because information about proposal submission is not commonly available.</p></li>
+Today Scientific collaboration is already common within and among a large number of disciplines. One of the most widely discussed forms of scientific collaborations using social network analysis is co-authorship. Besides co-authorship, co-investigation that happens when investigators work on and submit a proposal together, is another form of scientific collaboration. Its importance is no less than the widely studied co-authorship. However, unlike co-authorship, little is studied about co-investigation relationships because information about proposal submission is not commonly available.</p></li>
 <li><strong>Study Objectives:</strong></li>
 </ul>
 <ol style="list-style-type: decimal">
-<li>Reveal the topological structures of investigator networks at UB between fiscal year 2011 and 2015.</li>
+<li>Reveal the topological structures of investigator networks at UB between the fiscal year 2011 and 2015.</li>
 <li>Investigate the temporal characteristics of these networks and how they evolve over time.</li>
 </ol>
 <ul>
@@ -340,69 +341,31 @@ Today Scientific collaboration is already common within and among a large number
 <ol style="list-style-type: decimal">
 <li>A better understanding of scientific collaborations.</li>
 <li>Promote proposal writing at UB.</li>
+<li>The approaches used can be applied to other institutions where research proposals are actively submitted.</li>
 </ol>
 </div>
 <div id="materials-and-methods" class="section level1 tabset tabset-fade">
 <h1>Materials and Methods</h1>
-<div id="data" class="section level2">
-<h2>Data</h2>
-<p>Data used in this project was acquired from UB Sponsored Projects Services (SPS) with the help of my advisor, Dr. Ling Bian. A total of 7,714 proposals submitted from UB between the fiscal year 2011 and 2015 involving 1,446 investigators are included in a series of spreadsheets.</p>
+<div id="packages" class="section level2">
+<h2>Packages</h2>
+<p>Here are the pacakges needed to run the codes:</p>
 <pre class="r"><code>library(RCurl)
 library(knitr)
 library(igraph)
 library(dplyr)</code></pre>
-<pre class="r"><code>dept_2011 &lt;- getURL(&quot;https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Dept_2011.csv&quot;, 
-    ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
-dept2011_frame &lt;- read.csv(textConnection(dept_2011), header = T)
-knitr::kable(head(dept2011_frame), caption = &quot;Example of Department Table&quot;)</code></pre>
-<table>
-<caption>Example of Department Table</caption>
-<thead>
-<tr class="header">
-<th align="left">ID</th>
-<th align="left">Department</th>
-<th align="left">School</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">RIA24</td>
-<td align="left">Research Institute on Addictions</td>
-<td align="left">Research Center and Institute</td>
-</tr>
-<tr class="even">
-<td align="left">SSW13</td>
-<td align="left">School of Social Work</td>
-<td align="left">School of Social Work</td>
-</tr>
-<tr class="odd">
-<td align="left">RIA16</td>
-<td align="left">Research Institute on Addictions</td>
-<td align="left">Research Center and Institute</td>
-</tr>
-<tr class="even">
-<td align="left">PSY17</td>
-<td align="left">Psychology</td>
-<td align="left">College of Arts and Sciences</td>
-</tr>
-<tr class="odd">
-<td align="left">PHS08</td>
-<td align="left">Pharmaceutical Sciences</td>
-<td align="left">School of Pharmacy and Pharmaceutical Sciences</td>
-</tr>
-<tr class="even">
-<td align="left">PT09</td>
-<td align="left">Pharmacology &amp; Toxicology</td>
-<td align="left">School of Medicine and Biomedical Sciences</td>
-</tr>
-</tbody>
-</table>
+<p><code>Please see &quot;Data&quot; tab for the data used in the project.</code></p>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<p>Data used in this project was acquired from UB Sponsored Projects Services (SPS) with the help of my advisor, Dr. Ling Bian. A total of 7,714 proposals submitted from UB between the fiscal year 2011 and 2015 involving 1,446 investigators are included in a series of spreadsheets.</p>
+<p>These spreadsheets are preprocessed and organized into a relational database. The database includes three parts:</p>
+<p><strong>1. Collborated Investigators:</strong> These investigators collborated on proposals. Each record includes the name of PI and one co-PI, the ID of proposal they submitted together, the year they submitted the proposal, and the status of the proposal.</p>
 <pre class="r"><code>corp &lt;- getURL(&quot;https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_Corp.csv&quot;, 
     ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
 corp_frame &lt;- read.csv(textConnection(corp), header = T)
-knitr::kable(head(corp_frame), caption = &quot;Example of Corporate Proposal Table&quot;)</code></pre>
+knitr::kable(head(corp_frame), caption = &quot;Example of Collborated Investigators Table&quot;)</code></pre>
 <table>
-<caption>Example of Corporate Proposal Table</caption>
+<caption>Example of Collborated Investigators Table</caption>
 <thead>
 <tr class="header">
 <th align="left">ID1</th>
@@ -457,12 +420,13 @@ knitr::kable(head(corp_frame), caption = &quot;Example of Corporate Proposal Tab
 </tr>
 </tbody>
 </table>
+<p><strong>2. Single Investigators:</strong> These investigators worked on their own. Each record includes the name of PI, the ID of the proposal, the year the proposal was submitted, and the status of the proposal.</p>
 <pre class="r"><code>single &lt;- getURL(&quot;https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_SIngle.csv&quot;, 
     ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
 single_frame &lt;- read.csv(textConnection(single), header = T)
-knitr::kable(head(single_frame), caption = &quot;Example of Single Proposal Table&quot;)</code></pre>
+knitr::kable(head(single_frame), caption = &quot;Example of Single Investigators Table&quot;)</code></pre>
 <table>
-<caption>Example of Single Proposal Table</caption>
+<caption>Example of Single Investigators Table</caption>
 <thead>
 <tr class="header">
 <th align="left">ID</th>
@@ -510,36 +474,92 @@ knitr::kable(head(single_frame), caption = &quot;Example of Single Proposal Tabl
 </tr>
 </tbody>
 </table>
+<p><strong>3. Investigator Information:</strong> Each record includes investigator ID, his/her department and school affiliation.</p>
+<pre class="r"><code>dept_2011 &lt;- getURL(&quot;https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Dept_2011.csv&quot;, 
+    ssl.verifyhost = FALSE, ssl.verifypeer = FALSE)
+dept2011_frame &lt;- read.csv(textConnection(dept_2011), header = T)
+knitr::kable(head(dept2011_frame), caption = &quot;Example of Investigator Information Table&quot;)</code></pre>
+<table>
+<caption>Example of Investigator Information Table</caption>
+<thead>
+<tr class="header">
+<th align="left">ID</th>
+<th align="left">Department</th>
+<th align="left">School</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">RIA24</td>
+<td align="left">Research Institute on Addictions</td>
+<td align="left">Research Center and Institute</td>
+</tr>
+<tr class="even">
+<td align="left">SSW13</td>
+<td align="left">School of Social Work</td>
+<td align="left">School of Social Work</td>
+</tr>
+<tr class="odd">
+<td align="left">RIA16</td>
+<td align="left">Research Institute on Addictions</td>
+<td align="left">Research Center and Institute</td>
+</tr>
+<tr class="even">
+<td align="left">PSY17</td>
+<td align="left">Psychology</td>
+<td align="left">College of Arts and Sciences</td>
+</tr>
+<tr class="odd">
+<td align="left">PHS08</td>
+<td align="left">Pharmaceutical Sciences</td>
+<td align="left">School of Pharmacy and Pharmaceutical Sciences</td>
+</tr>
+<tr class="even">
+<td align="left">PT09</td>
+<td align="left">Pharmacology &amp; Toxicology</td>
+<td align="left">School of Medicine and Biomedical Sciences</td>
+</tr>
+</tbody>
+</table>
+<p><code>Please see &quot;Methodology&quot; tab for the methods used in the project.</code></p>
 </div>
 <div id="methodology" class="section level2">
 <h2>Methodology</h2>
-<pre class="r"><code>corp2011&lt;-filter(corp_frame,Year == &quot;2011&quot;)
-single2011&lt;-filter(single_frame,Year == &quot;2011&quot;)
-corp.network1&lt;-graph.data.frame(corp2011, vertice = dept2011_frame,directed=F)
+<p>To fulfill the research objectives, three steps will be taken in the study.</p>
+<p><strong>1.Constructing Investigator Networks:</strong><br />
+The investigator networks are built for each fiscal year. In the networks, nodes represent investigators and edges are established if two investigators worked on a proposal. Single investigators will be represented as isolated nodes. Each node is assigned properties, including investigator ID, and department and school affiliation. Each edge is also assigned properties, including proposal ID and whether it was awarded.</p>
+<p>Here are the codes for constructing investigator network in fiscal year 2011:</p>
+<pre class="r"><code>corp2011 &lt;- filter(corp_frame, Year == &quot;2011&quot;)
+single2011 &lt;- filter(single_frame, Year == &quot;2011&quot;)
+corp.network1 &lt;- graph.data.frame(corp2011, vertice = dept2011_frame, directed = F)
 V(corp.network1)$color &lt;- V(corp.network1)$School
-color_matrix &lt;- matrix(c(&quot;deeppink1&quot;,&quot;dodgerblue2&quot;,&quot;cadetblue1&quot;,
-                         &quot;brown2&quot;,&quot;darkorchid2&quot;,&quot;darkseagreen3&quot;,
-                         &quot;green2&quot;,&quot;gray0&quot;,&quot;darkorange1&quot;,
-                         &quot;firebrick1&quot;,&quot;darkgreen&quot;,&quot;darkgoldenrod3&quot;,
-                         &quot;coral1&quot;,&quot;antiquewhite3&quot;))
-school_matrix &lt;- matrix(nrow=14)
-for (i in 1:14){
-  V(corp.network1)$color &lt;- gsub( unique(dept2011_frame$School)[i],color_matrix[i],V(corp.network1)$color)
-  school_matrix[i]&lt;-toString(unique(dept2011_frame$School)[i])
-}
-plot(corp.network1, vertex.size=3, vertex.frame.color=&quot;Gray&quot;, 
-     edge.width = 0.7, isolates = single2011, 
-     layout= layout_nicely(corp.network1), main= &quot;Investigator Network at UB 2011&quot;, vertex.label = NA)
-
-legend(&quot;bottomleft&quot;, school_matrix, pch=20,
-       col=color_matrix, pt.cex=1.3, cex=0.6, bty=&quot;n&quot;, ncol=1, text.col= &quot;gray35&quot;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<p><img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/Turdus-migratorius-002.jpg" alt="alt text" width="200"> <small><small><small>Licensed under CC BY-SA 3.0 via <a href="https://commons.wikimedia.org/wiki/File:Turdus-migratorius-002.jpg#/media/File:Turdus-migratorius-002.jpg">Wikimedia Commons</a></small></small></small></p>
+color_matrix &lt;- matrix(c(&quot;deeppink1&quot;, &quot;dodgerblue2&quot;, &quot;cadetblue1&quot;, &quot;brown2&quot;, 
+    &quot;darkorchid2&quot;, &quot;darkseagreen3&quot;, &quot;green2&quot;, &quot;gray0&quot;, &quot;darkorange1&quot;, &quot;firebrick1&quot;, 
+    &quot;darkgreen&quot;, &quot;darkgoldenrod3&quot;, &quot;coral1&quot;, &quot;antiquewhite3&quot;))
+school_matrix &lt;- matrix(nrow = 14)
+for (i in 1:14) {
+    V(corp.network1)$color &lt;- gsub(unique(dept2011_frame$School)[i], color_matrix[i], 
+        V(corp.network1)$color)
+    school_matrix[i] &lt;- toString(unique(dept2011_frame$School)[i])
+}</code></pre>
+<p><strong>2.Identifying Topological Characteristics:</strong><br />
+Four sets of metrics, i.e., density, network clustering coefficient, average path length, and centrality are used to analyze the topological characteristics of the investigator networks. <em>The density is used to explore whether the investigators often work with many other investigators. </em>The network clustering coefficient measures the probability that an investigator’s co-investigators also collaborate with each other. <em>The average path length over the network is utilized to identify the number of ‘investigator steps’ between two investigators. </em>The centrality metrics are introduced to identify the “star” investigators who are central and critical in the network. The top three investigators with the highest values of degree centrality, betweenness centrality, and closeness centrality are identified.</p>
+<pre class="r"><code># codes to be added..</code></pre>
+<p><strong>3.Identifying Temporal Characteristics:</strong><br />
+To be added…</p>
 </div>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
-<p>Show tables, plots, etc. and describe them.</p>
+<p>The investigator network for fiscal year 2011 is displayed as below. We can notice that there are a large number of isolated nodes in the network. These nodes represent single investigators who submitted proposals by themselves and did not have collaborators.</p>
+<pre class="r"><code>plot(corp.network1, vertex.size = 3, vertex.frame.color = &quot;Gray&quot;, edge.width = 0.7, 
+    isolates = single2011, layout = layout_nicely(corp.network1), main = &quot;Investigator Network at UB 2011&quot;, 
+    vertex.label = NA)
+
+legend(&quot;bottomleft&quot;, school_matrix, pch = 20, col = color_matrix, pt.cex = 1.3, 
+    cex = 0.4, bty = &quot;n&quot;, ncol = 1, text.col = &quot;gray35&quot;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>To be continued…</p>
 </div>
 <div id="conclusions" class="section level1">
 <h1>Conclusions</h1>
