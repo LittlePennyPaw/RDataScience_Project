@@ -1,5 +1,5 @@
 ---
-title: "I have the best titles"
+title: Investigator Networks at UB
 author: Yujia Pan
 subtitle: Explore the scientific collaborations at UB
 ---
@@ -9,11 +9,11 @@ subtitle: Explore the scientific collaborations at UB
 > But.. How do they collborate and who write proposals together?
 
 * **Problem Statement:**   
-Today Scientific collaboration is already common within and among a large number of disciplines. One of the most widely discussed forms of scientific collaborations using social network analysis is co-authorship. Besides co-authorship, co-investigation that happens when investigators work on and submit a proposal together, is another form of scientific collaboration. Its importance is no less than the widely studied co-authorship. However, unlike co-authorship, little is studied about co-investigation relationships because information about proposal submission is not commonly available.  
+Today Scientific collaboration is already common within and among a large number of disciplines [@Newman2001]. One of the most widely discussed forms of scientific collaborations using social network analysis is co-authorship. Besides co-authorship, co-investigation that happens when investigators work on and submit a proposal together, is another form of scientific collaboration. Its importance is no less than the widely studied co-authorship. However, unlike co-authorship, little is studied about co-investigation relationships because information about proposal submission is not commonly available.  
 
 * **Study Objectives:**
 1. Reveal the topological structures of investigator networks at UB between fiscal year 2011 and 2015.
-2. Investigate the temporal characteristics of these networks and how they envolve over time.
+2. Investigate the temporal characteristics of these networks and how they evolve over time.
 
 * **Significance: **
 1. A better understanding of scientific collaborations. 
@@ -25,11 +25,14 @@ Data used in this project was acquired from UB Sponsored Projects Services (SPS)
 ```{r, message=F, warning=F,tidy=TRUE}
 library(RCurl)
 library(knitr)
+library(igraph)
+library(dplyr)
 ```
 ```{r, tidy=TRUE, results = "asis"}
-dept <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_Dept.csv', ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
-dept_frame <- read.csv(textConnection(dept), header=T)
-knitr::kable(head(dept_frame), caption = "Example of Department Table") 
+dept_2011 <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Dept_2011.csv', ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
+dept2011_frame <- read.csv(textConnection(dept_2011), header=T)
+knitr::kable(head(dept2011_frame), caption = "Example of Department Table")
+
 corp <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/master/Data_Corp.csv', ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
 corp_frame <- read.csv(textConnection(corp), header=T)
 knitr::kable(head(corp_frame), caption = "Example of Corporate Proposal Table")
@@ -41,62 +44,34 @@ knitr::kable(head(single_frame), caption = "Example of Single Proposal Table")
 ```
 
 ##Methodology
-Narrative and most code will go here.  Describe what you are doing and show how to do it (with code).
-
-You can do bullets like this:
-
-* The first most important thing
-* The second most important thing
-* The third most important thing
-
-You can do numbers like this:
-
-1. The first most important thing
-2. The second most important thing
-3. The third most important thing
-
-See [http://rmarkdown.rstudio.com/](http://rmarkdown.rstudio.com/) for all the amazing things you can do.
 
 
-Here's my first code chunk.
 ```{r}
-1+2+3
+corp2011<-filter(corp_frame,Year == "2011")
+single2011<-filter(single_frame,Year == "2011")
+corp.network1<-graph.data.frame(corp2011, vertice = dept2011_frame,directed=F)
+V(corp.network1)$color <- V(corp.network1)$School
+color_matrix <- matrix(c("deeppink1","dodgerblue2","cadetblue1",
+                         "brown2","darkorchid2","darkseagreen3",
+                         "green2","gray0","darkorange1",
+                         "firebrick1","darkgreen","darkgoldenrod3",
+                         "coral1","antiquewhite3"))
+school_matrix <- matrix(nrow=14)
+for (i in 1:14){
+  V(corp.network1)$color <- gsub( unique(dept2011_frame$School)[i],color_matrix[i],V(corp.network1)$color)
+  school_matrix[i]<-toString(unique(dept2011_frame$School)[i])
+}
+plot(corp.network1, vertex.size=3, vertex.frame.color="Gray", 
+     edge.width = 0.7, isolates = single2011, 
+     layout= layout_nicely(corp.network1), main= "Investigator Network at UB 2011", vertex.label = NA)
+
+legend("bottomleft", school_matrix, pch=20,
+       col=color_matrix, pt.cex=1.3, cex=0.6, bty="n", ncol=1, text.col= "gray35")
 ```
-
-Load any required packages in a code chunk (you may need to install some packages):
-
-```{r, message=F, warning=F}
-library(dplyr)
-library(ggplot2)
-library(maps)
-library(spocc)
-knitr::opts_chunk$set(cache=TRUE)  # cache the results for quick compiling
-```
-
-
-We are going to use the `occ()` function to download _occurrence_ records for the American robin (_Turdus migratorius_) from the [Global Biodiversity Information Facility](gbif.org).
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/Turdus-migratorius-002.jpg" alt="alt text" width="200">
 <small><small><small>Licensed under CC BY-SA 3.0 via [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Turdus-migratorius-002.jpg#/media/File:Turdus-migratorius-002.jpg)</small></small></small>
 
-```{r, warning=F} 
-## define which species to query
-sp='Turdus migratorius'
-
-## run the query and convert to data.frame()
-d = occ(query=sp, from='ebird',limit = 100) %>% occ2df()
-```
-This can take a few seconds.
-
-```{r, fig.width=6, fig.height=3, fig.cap="Map illustrating the known occurrence locations"}
-# Load coastline
-map=map_data("world")
-
-ggplot(d,aes(x=longitude,y=latitude))+
-  geom_polygon(aes(x=long,y=lat,group=group),data=map)+
-  geom_point(col="red")+
-  coord_equal()
-```
 
 
 # Results
