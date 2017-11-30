@@ -338,6 +338,7 @@ render.d3movie(egonet,output.mode = 'htmlWidget',
                vertex.border = "lightgrey",vertex.cex=1,usearrows=F,
                nodeSizeFactor = 0.05)
 ```
+</br>
 
 A timeline plot further illustrated the evolvement of the ego network, showing the addition of alters and the increase of edges. The colors assigned correspond to those in the animated ego network. We can clearly see that only a few new alters are included in 2013. It could suggest that the collaboration group around this investigator is nearly fully formed by that time.
 
