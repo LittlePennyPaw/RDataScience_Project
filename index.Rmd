@@ -327,7 +327,7 @@ render.d3movie(egonet,output.mode = 'htmlWidget',
                displaylabels=T,label.cex = 0.6,label.color="darkgrey",
                vertex.col = ifelse(egonet%v%'year'=='1',"darkred",
                               (ifelse(egonet%v%'year'=='2',"red","pink"))),
-               edge.col = ifelse(egonet%e%'award'=='YES','orange','grey'),
+               edge.col = ifelse(egonet%e%'award'=='YES','orange','darkgrey'),
                vertex.border = "lightgrey",vertex.cex=1,usearrows=F,
                nodeSizeFactor = 0.05)
 ```
@@ -338,7 +338,7 @@ We can clearly see that only a few new alters are included in 2013. It could sug
 ```{r, tidy=TRUE, message=F, warning=F}
 #timeline plot for the egonet
 timeline(egonet,slice.par=slice.par,displaylabels= F,
-         edge.col=ifelse(egonet%e%'award'=='YES','orange','grey'),
+         edge.col=ifelse(egonet%e%'award'=='YES','orange','darkgrey'),
          vertex.col=ifelse(egonet%v%'year'=='1',"darkred",
                                    (ifelse(egonet%v%'year'=='2',"red","pink"))))
 
