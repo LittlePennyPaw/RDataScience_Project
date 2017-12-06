@@ -28,7 +28,7 @@ This project aims to reveal the characteristics of collaborative proposal writin
 
 <br>
 
-# Materials and Methods {.tabset .tabset-fade}
+# Materials and Methods
 ##Packages
 Here are the pacakges needed to run the codes:
 ```{r, message=F, warning=F,tidy=TRUE}
@@ -42,8 +42,6 @@ library(animation)
 library(network)
 library(tsna)
 ```
-
-`Please see "Data" tab for the data used in the project.`  
 
 <br>
 
@@ -80,8 +78,6 @@ dept_2015 <- getURL('https://raw.githubusercontent.com/LittlePennyPaw/Data/maste
 dept2015_frame <- read.csv(textConnection(dept_2015), header=T)
 knitr::kable(head(dept2011_frame), caption = "Example of Investigator Information Table")
 ```
-
-`Please see "Methodology" tab for the methods used in the project.`  
 
 <br>
 
@@ -296,9 +292,7 @@ knitr::kable(ccTable, caption = "Top 5 Closeness Centrality")
 ```
 
 ## Community Structure at Local Level  
-The local network at Geography Department is displayed as below. Orange nodes represent investigators from Geography Department and grey nodes are their direct collaborators from other departments. All five fiscal years are taken into account. The modularity of the local network turns out to be high (0.723), showing the existence of the community structure. This result iterates the above finding that investigators have strong interconnections in their established groups.
-
-Further calculation suggested that there are in total 10 communities in this local network. The community graph and the dendrogram follow to offer a closer view of the community strucutre.
+The local network at Geography Department is displayed as below. Orange nodes represent investigators from Geography Department and grey nodes are their direct collaborators from other departments. All five fiscal years are taken into account. 
 
 ```{r, tidy=TRUE}
 #plot the local network
@@ -306,21 +300,27 @@ Further calculation suggested that there are in total 10 communities in this loc
      edge.width = 1,layout= layout_nicely(networks_geo), 
      main= "Local Investigator Network at Geography Department", 
      vertex.label = networks_geo$name, vertex.label.cex=0.6, vertex.label.dist=1, vertex.label.color="black")
+```
+Test if community structure exists using 'modularity' function:  `r modularity(ceb)`, The modularity of the local network turns out to be high, showing the existence of the community structure. This result iterates the above finding that investigators have strong interconnections in their established groups.
+```{r, tidy=TRUE}
+modularity(ceb)
+```
 
-#test if community structure exists
-  modularity(ceb)
-  
-#the number of communities in the local network
+Get the number of communities in the local network using 'length' function: `r length(ceb)`. This calculation suggested that there are in total 10 communities in this local network. 
+```{r, tidy=TRUE}
   length(ceb)
-  
+```
+
+The community graph follows to show the division of communities around investigators from Geography Department. The nodes that belong to a community are assigned the same color. 
+```{r, tidy=TRUE}
 #plot the community gragh
   plot(ceb,networks_geo,vertex.label.cex=0.6,
        vertex.size=8,vertex.label.dist=1, vertex.label.color="black", vertex.label.degree= -pi/2,vertex.label.font=3, main = "Community Graph of the Local Network")
-
-  
+```
+The dendrogram below offers a closer view of the community structure. Those investigators who belong to the same community (10 in total) are assigned the same color. Investigators who are connected more closely will form even smaller communities as shown in the dendrogram.
+```{r, tidy=TRUE}
 #plot the dendPlot of the structure
-  dendPlot(ceb, mode="phylo",type = "fan", label.offset = 0.2, cex = 0.7, main = "Dendplot ")
-
+  dendPlot(ceb, mode="phylo",type = "fan", label.offset = 0.2, cex = 0.7, main="Dendrogram showing Detailed Community Structure")
 ```
 
 ## Ego Network Evolvement at Individual Level 
@@ -340,16 +340,17 @@ render.d3movie(egonet,output.mode = 'htmlWidget',
 ```
 </br>
 
-A timeline plot further illustrated the evolvement of the ego network, showing the addition of alters and the increase of edges. The colors assigned correspond to those in the animated ego network. We can clearly see that only a few new alters are included in 2013. It could suggest that the collaboration group around this investigator is nearly fully formed by that time.
 
 ```{r, tidy=TRUE, message=F, warning=F}
 #timeline plot for the egonet
-timeline(egonet,slice.par=slice.par,displaylabels= F,
+timeline(egonet,slice.par=slice.par,displaylabels= F, main="Timeline Plot showing Evolvement of Ego Network",
          edge.col=ifelse(egonet%e%'award'=='YES','orange','darkgrey'),
          vertex.col=ifelse(egonet%v%'year'=='1',"darkred",
                                    (ifelse(egonet%v%'year'=='2',"red","pink"))))
 
 ```
+
+The above timeline plot further illustrated the evolvement of the ego network, showing the addition of alters and the increase of edges. The colors assigned correspond to those in the animated ego network. We can clearly see that only a few new alters are included in 2013. It could suggest that the collaboration group around this investigator is nearly fully formed by that time.
 
 # Conclusions
 This project applies social network analysis to explore the characteristics of collaborative proposal writing at UB during the fiscal year 2011 and 2015. Different investigator networks at three levels are built and analyzed.
