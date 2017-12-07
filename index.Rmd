@@ -301,6 +301,7 @@ The local network at Geography Department is displayed as below. Orange nodes re
      main= "Local Investigator Network at Geography Department", 
      vertex.label = networks_geo$name, vertex.label.cex=0.6, vertex.label.dist=1, vertex.label.color="black")
 ```
+</br>
 Test if community structure exists using 'modularity' function:  `r modularity(ceb)`, The modularity of the local network turns out to be high, showing the existence of the community structure. This result iterates the above finding that investigators have strong interconnections in their established groups.
 ```{r, tidy=TRUE}
 modularity(ceb)
@@ -310,7 +311,6 @@ Get the number of communities in the local network using 'length' function: `r l
 ```{r, tidy=TRUE}
   length(ceb)
 ```
-
 The community graph follows to show the division of communities around investigators from Geography Department. The nodes that belong to a community are assigned the same color. 
 ```{r, tidy=TRUE}
 #plot the community gragh
